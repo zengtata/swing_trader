@@ -8,13 +8,13 @@ from src.regime.fred_client import FREDClient
 
 logger = logging.getLogger(__name__)
 
-_HY_SERIES = "BAMLH0A0HYM2"
+_SERIES_ID = "BAA10Y"
 
 
 def _classify(spread: float) -> Literal["GREEN", "YELLOW", "RED"]:
-    if spread > 5.50:
+    if spread > 3.50:
         return "RED"
-    if spread >= 4.00:
+    if spread >= 2.50:
         return "YELLOW"
     return "GREEN"
 
@@ -26,7 +26,7 @@ def get_regime_signal(
     if client is None:
         client = FREDClient.from_settings()
 
-    series = client.fetch_series(_HY_SERIES).dropna()
+    series = client.fetch_series(_SERIES_ID).dropna()
 
     if as_of is None:
         spread = float(series.iloc[-1])
@@ -49,7 +49,7 @@ def get_regime_series(
 
     # Fetch with a 10-bday lookback so ffill always has a prior value at `start`
     fetch_start = (pd.Timestamp(start) - pd.offsets.BDay(10)).date()
-    raw = client.fetch_series(_HY_SERIES, start=fetch_start, end=end).dropna()
+    raw = client.fetch_series(_SERIES_ID, start=fetch_start, end=end).dropna()
     regimes = raw.map(_classify)
 
     bdays = pd.bdate_range(start, end)
