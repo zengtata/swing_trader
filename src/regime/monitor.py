@@ -1,8 +1,8 @@
 import logging
 from datetime import date
-
-import pandas as pd
 from typing import Literal
+
+import pandas as pd  # type: ignore[import-untyped]
 
 from src.regime.fred_client import FREDClient
 
