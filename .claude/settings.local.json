@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv --version)",
+      "Bash(uv init *)",
+      "Bash(uv add *)",
+      "Bash(uv sync *)",
+      "Bash(uv run *)",
+      "Bash(echo \"exit=$?\")"
+    ]
+  }
+}
