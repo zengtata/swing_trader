@@ -9,3 +9,5 @@ data/processed/
 .ipynb_checkpoints/
 .DS_Store
 .worktrees/
+.claude
+.idea
