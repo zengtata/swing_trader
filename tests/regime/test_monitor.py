@@ -9,7 +9,7 @@ from src.regime.monitor import get_regime_series, get_regime_signal
 
 def _make_client(values: list[float], dates: list[str]) -> FREDClient:
     client = MagicMock(spec=FREDClient)
-    client.fetch_series.return_value = pd.Series(
+    client.fetch_composite_spread.return_value = pd.Series(
         values,
         index=pd.to_datetime(dates),
         dtype="float64",

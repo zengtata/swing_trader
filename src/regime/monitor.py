@@ -1,3 +1,8 @@
+# Credit-spread regime signal using Moody's Baa corporate yield minus the
+# 10-year Treasury (BAA - GS10).  This freely available FRED composite
+# replaces BAMLH0A0HYM2 (ICE-restricted to 3 years of history since 2023)
+# and BAA10Y (discontinued).  BAA is available from 1919; GS10 from 1953,
+# giving full history through every major stress event.
 import logging
 from datetime import date
 from typing import Literal
@@ -7,8 +12,6 @@ import pandas as pd  # type: ignore[import-untyped]
 from src.regime.fred_client import FREDClient
 
 logger = logging.getLogger(__name__)
-
-_SERIES_ID = "BAA10Y"
 
 
 def _classify(spread: float) -> Literal["GREEN", "YELLOW", "RED"]:
@@ -26,7 +29,7 @@ def get_regime_signal(
     if client is None:
         client = FREDClient.from_settings()
 
-    series = client.fetch_series(_SERIES_ID).dropna()
+    series = client.fetch_composite_spread().dropna()
 
     if as_of is None:
         spread = float(series.iloc[-1])
@@ -35,7 +38,7 @@ def get_regime_signal(
         eligible = series[series.index <= as_of_ts]
         spread = float(eligible.iloc[-1])
 
-    logger.debug("HY OAS spread=%.2f → %s", spread, _classify(spread))
+    logger.debug("BAA spread=%.2f → %s", spread, _classify(spread))
     return _classify(spread)
 
 
@@ -49,7 +52,7 @@ def get_regime_series(
 
     # Fetch with a 10-bday lookback so ffill always has a prior value at `start`
     fetch_start = (pd.Timestamp(start) - pd.offsets.BDay(10)).date()
-    raw = client.fetch_series(_SERIES_ID, start=fetch_start, end=end).dropna()
+    raw = client.fetch_composite_spread(start=fetch_start, end=end).dropna()
     regimes = raw.map(_classify)
 
     bdays = pd.bdate_range(start, end)
