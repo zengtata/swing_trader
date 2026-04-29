@@ -45,3 +45,15 @@ class FREDClient:
         result.index = pd.to_datetime(result.index)
         self._cache[key] = result
         return result
+
+    def fetch_composite_spread(
+        self,
+        start: date | None = None,
+        end: date | None = None,
+    ) -> pd.Series:
+        baa = self.fetch_series("BAA", start=start, end=end)
+        gs10 = self.fetch_series("GS10", start=start, end=end)
+        aligned = pd.DataFrame({"BAA": baa, "GS10": gs10}).dropna()
+        spread = aligned["BAA"] - aligned["GS10"]
+        spread.name = "BAA_spread"
+        return spread
