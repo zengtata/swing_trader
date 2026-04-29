@@ -51,14 +51,14 @@ class FREDClient:
         start: date | None = None,
         end: date | None = None,
     ) -> pd.Series:
-        baa = self.fetch_series("BAA", start=start, end=end)
-        gs10 = self.fetch_series("GS10", start=start, end=end)
-        aligned = pd.DataFrame({"BAA": baa, "GS10": gs10}).dropna()
+        baa = self.fetch_series("DBAA", start=start, end=end)
+        gs10 = self.fetch_series("DGS10", start=start, end=end)
+        aligned = pd.DataFrame({"DBAA": baa, "DGS10": gs10}).dropna()
         if aligned.empty:
             logger.warning(
-                "fetch_composite_spread: no overlapping dates for BAA and GS10 "
+                "fetch_composite_spread: no overlapping dates for DBAA and DGS10 "
                 "(start=%s, end=%s)", start, end
             )
-        spread = aligned["BAA"] - aligned["GS10"]
+        spread = aligned["DBAA"] - aligned["DGS10"]
         spread.name = "BAA_spread"
         return spread

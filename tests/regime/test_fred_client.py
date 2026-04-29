@@ -64,7 +64,7 @@ def test_fetch_composite_spread_returns_baa_minus_gs10(mocker) -> None:
     )
 
     def _fake_get_series(series_id, **_kwargs):
-        return {"BAA": baa, "GS10": gs10}[series_id]
+        return {"DBAA": baa, "DGS10": gs10}[series_id]
 
     mocker.patch("fredapi.Fred.get_series", side_effect=_fake_get_series)
     client = FREDClient(api_key="test-key")
@@ -97,7 +97,7 @@ def test_fetch_composite_spread_drops_dates_missing_from_either_series(mocker) -
     )
 
     def _fake_get_series(series_id, **_kwargs):
-        return {"BAA": baa, "GS10": gs10}[series_id]
+        return {"DBAA": baa, "DGS10": gs10}[series_id]
 
     mocker.patch("fredapi.Fred.get_series", side_effect=_fake_get_series)
     client = FREDClient(api_key="test-key")

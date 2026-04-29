@@ -6,7 +6,13 @@
       "Bash(uv add *)",
       "Bash(uv sync *)",
       "Bash(uv run *)",
-      "Bash(echo \"exit=$?\")"
+      "Bash(echo \"exit=$?\")",
+      "Bash(python -c \"import json; nb = json.load\\(open\\('notebooks/01_regime_validation.ipynb'\\)\\); print\\(f'JSON OK — {len\\(nb[\\\\\"cells\\\\\"]\\)} cells'\\)\")",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(python *)",
+      "Bash(git -C \"C:/Users/zengtata/Desktop/swing_trader/.worktrees/baa-gs10-composite\" log --oneline master..HEAD)",
+      "Bash(git -C \"C:/Users/zengtata/Desktop/swing_trader/.worktrees/baa-gs10-composite\" log --oneline HEAD~5..HEAD)"
     ]
   }
 }
