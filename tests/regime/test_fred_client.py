@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from src.regime.fred_client import FREDClient
+from src.regime.fred_client import FREDClient, FREDFetchError
 
 
 def test_fetch_composite_spread_returns_baa_minus_gs10(mocker) -> None:
@@ -73,3 +73,10 @@ def test_fetch_composite_spread_result_is_named_baa_spread(mocker) -> None:
     result = client.fetch_composite_spread()
 
     assert result.name == "BAA_spread"
+
+
+def test_fetch_composite_spread_propagates_fred_fetch_error(mocker) -> None:
+    mocker.patch("fredapi.Fred.get_series", side_effect=Exception("timeout"))
+    client = FREDClient(api_key="test-key")
+    with pytest.raises(FREDFetchError):
+        client.fetch_composite_spread()
